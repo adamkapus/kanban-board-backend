@@ -92,6 +92,31 @@ namespace TemalabBackend.Controllers
             return NoContent();
         }
 
-       
+
+        [HttpPut]
+        public async Task<IActionResult> SwapToDoItems([FromQuery] int firstId, [FromQuery] int secondId)
+        {
+            var firstItem = await tm.GetToDoOrNull(firstId);
+            if (firstItem == null)
+            {
+                return NotFound();
+            }
+
+            var seconditem = await tm.GetToDoOrNull(secondId);
+            if (seconditem == null)
+            {
+                return NotFound();
+            }
+            bool success = await tm.SwapToDoItems(firstId,secondId);
+            if (!success)
+            {
+                return Conflict();
+            }
+
+            return NoContent();
+
+        }
+
+
     }
 }

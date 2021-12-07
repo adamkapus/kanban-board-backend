@@ -35,7 +35,7 @@ namespace TemalabBackend
         {
 
             services.AddDbContext<ToDoDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Temalab")));
-            //(opt => opt.UseInMemoryDatabase("TemalabTesztelo"));
+            
 
 
             services.AddTransient<IToDoItemRepository, ToDoItemRepository>();
@@ -43,10 +43,7 @@ namespace TemalabBackend
             services.AddTransient<IToDoManager, ToDoManager>();
 
             services.AddControllers();
-            /*services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "TemalabBackend", Version = "v1" });
-            });*/
+           
 
             services.AddCors(opt =>
             {
@@ -56,14 +53,7 @@ namespace TemalabBackend
                 });
             });
 
-            /*services.AddCors(options =>
-            {
-                options.AddDefaultPolicy(
-                                  builder =>
-                                  {
-                                      builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
-                                  });
-            });*/
+            
 
         }
 
@@ -73,15 +63,9 @@ namespace TemalabBackend
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseSwagger();
-                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TemalabBackend v1"));
+                
             }
-            //app.UseCors("pls");
-            //app.UseHttpsRedirection();
-
-            //app.UseCors("pls");
-
-            //app.UseHttpLogging();
+            
 
             app.UseRouting();
 

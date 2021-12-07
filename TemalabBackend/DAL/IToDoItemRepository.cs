@@ -10,16 +10,13 @@ namespace TemalabBackend.DAL
         Task<IReadOnlyCollection<ToDoItem>> ListToDos();
         Task<ToDoItem> GetToDoOrNull(int todoId);
 
-        //modify
-
         Task<bool> ModifyToDo(ToDoItem newItem);
-
-        //create
 
         Task AddToDo(ToDoItem item);
 
-
         Task<bool> DeleteToDo(int todoId);
+
+        Task<bool> SwapToDoItems(int firstId, int secondId);
 
 
     }

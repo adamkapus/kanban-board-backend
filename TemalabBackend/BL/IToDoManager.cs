@@ -13,13 +13,15 @@ namespace TemalabBackend.BL
 
 
         Task<IReadOnlyCollection<ToDoItem>> ListToDos();
-         Task<ToDoItem> GetToDoOrNull(int todoId);// => await toDoItemRepository.GetToDoOrNull(todoId);
+         Task<ToDoItem> GetToDoOrNull(int todoId);
 
-        Task<bool> ModifyToDo(ToDoItem newItem);// => await toDoItemRepository.ModifyToDo(newItem);
+        Task<bool> ModifyToDo(ToDoItem newItem);
 
-         Task AddToDo(ToDoItem item);// => await toDoItemRepository.AddToDo(item);
+         Task AddToDo(ToDoItem item);
 
-        Task<bool> DeleteToDo(int todoId);// => await toDoItemRepository.DeleteToDo(todoId);
+        Task<bool> DeleteToDo(int todoId);
+
+        Task<bool> SwapToDoItems(int firstId, int secondId);
 
     }
 

@@ -26,6 +26,8 @@ namespace TemalabBackend.BL
 
         public async Task<bool> DeleteToDo(int todoId) => await toDoItemRepository.DeleteToDo(todoId);
 
+        public async Task<bool> SwapToDoItems(int firstId, int secondId) => await toDoItemRepository.SwapToDoItems(firstId, secondId);
+
     }
     
 }
