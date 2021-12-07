@@ -77,7 +77,7 @@ namespace TemalabBackend
                 //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "TemalabBackend v1"));
             }
             //app.UseCors("pls");
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             //app.UseCors("pls");
 
