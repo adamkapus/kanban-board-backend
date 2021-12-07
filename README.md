@@ -15,12 +15,12 @@ A szerver egy REST API-t valósít meg, amivel teendőket lehet kezelni.
 
 Támogatott műveletek:
 
-GET api/ToDoItems : Visszaadja az összes teendőt
+Kérés : GET api/ToDoItems    Válasz: Visszaadja az összes teendőt
 
-GET api/ToDoItems/id : Visszaadja az adott id-jú teendőt
+Kérés: GET api/ToDoItems/id     Válasz: Visszaadja az adott id-jú teendőt, vagy 404-es hibakódot, ha nem létezik adott ID-vel teendő
 
-PUT api/ToDoItems/id és a kérés body-jában a módosított értékek : Módosítja az adott id-jú teendőt
+Kérés: PUT api/ToDoItems/id és a kérés body-jában a módosított értékek  Válasz: Módosítja az adott id-jú teendőt, a válasz üres, ha sikeres, 404-es hibakódú, ha nem létezik adott ID-vel teendő
 
-POST api/ToDoItems és a kérés body-jában az új teendő : Létrehozza az adott id-jú teendőt, a válaszban a Location headerben megtalálható az új teendő
+Kérés: POST api/ToDoItems és a kérés body-jában az új teendő    Válasz: Létrehozza az adott id-jú teendőt, a válaszban a Location headerben megtalálható az új teendő
 
-DELETE api/ToDoItems/id : Törli az adott id-jú teendőt
+Kérés: DELETE api/ToDoItems/id     Válasz: Törli az adott id-jú teendőt, a válasz üres, ha sikeres, 404-es hibakódú, ha nem létezik adott ID-vel teendő
