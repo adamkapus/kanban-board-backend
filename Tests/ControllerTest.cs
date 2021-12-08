@@ -134,5 +134,39 @@ namespace Tests
 
             Assert.IsNotNull(result);
         }
+
+
+
+        [TestMethod]
+        public async Task SwapToDoNonExistingToDo()
+        {
+
+            var mockManager = new Mock<IToDoManager>();
+            mockManager.Setup(x => x.GetToDoOrNull(It.IsAny<int>())).ReturnsAsync((ToDoItem)null);
+
+            var controller = new ToDoItemsController(mockManager.Object);
+
+
+            var result = await controller.SwapToDoItems(1,2);
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+
+        }
+
+        [TestMethod]
+        public async Task SwapToDoToDosNotInSameCategory()
+        {
+
+            var mockManager = new Mock<IToDoManager>();
+            mockManager.Setup(x => x.GetToDoOrNull(1)).ReturnsAsync(new ToDoItem { ID = 1 });
+            mockManager.Setup(x => x.GetToDoOrNull(2)).ReturnsAsync(new ToDoItem { ID = 2 });
+            mockManager.Setup(x => x.SwapToDoItems(It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(false);
+
+            var controller = new ToDoItemsController(mockManager.Object);
+            var result = await controller.SwapToDoItems(1, 2);
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(ConflictResult));
+
+        }
     }
 }

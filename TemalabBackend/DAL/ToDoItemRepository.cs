@@ -48,7 +48,7 @@ namespace TemalabBackend.DAL
         public async Task AddToDo(ToDoItem item)
         {
 
-            int maxCategoryPos = maxCategoryPosInCategory(item.Category);
+            int maxCategoryPos = MaxCategoryPosInCategory(item.Category);
             item.CategoryPos = maxCategoryPos + 1;
 
             db.ToDoItem.Add(item);
@@ -62,80 +62,76 @@ namespace TemalabBackend.DAL
         public async Task<bool> ModifyToDo(ToDoItem newItem)
         {
 
-            using (var tran = new TransactionScope(
+            using var tran = new TransactionScope(
                 TransactionScopeOption.Required,
                 new TransactionOptions() { IsolationLevel = IsolationLevel.Serializable },
-                TransactionScopeAsyncFlowOption.Enabled))
+                TransactionScopeAsyncFlowOption.Enabled);
+            var currentItem = await GetToDoOrNull(newItem.ID);
+            if (currentItem == null)
             {
-                var currentItem = await GetToDoOrNull(newItem.ID);
-                if(currentItem == null)
-                {
-                    tran.Complete();
-                    return false;
-                }
-
-                if(currentItem.Category != newItem.Category)
-                {
-                    newItem.CategoryPos = maxCategoryPosInCategory(newItem.Category) + 1;
-                }
-                currentItem.Name = newItem.Name;
-                currentItem.Category = newItem.Category;
-                currentItem.CategoryPos = newItem.CategoryPos;
-                currentItem.Description = newItem.Description;
-                currentItem.DueDate = newItem.DueDate;
-
-               
-             
-                    await db.SaveChangesAsync();
-              
                 tran.Complete();
-                return true;
+                return false;
             }
 
-            
+            if (currentItem.Category != newItem.Category)
+            {
+                newItem.CategoryPos = MaxCategoryPosInCategory(newItem.Category) + 1;
+            }
+            currentItem.Name = newItem.Name;
+            currentItem.Category = newItem.Category;
+            currentItem.CategoryPos = newItem.CategoryPos;
+            currentItem.Description = newItem.Description;
+            currentItem.DueDate = newItem.DueDate;
+
+
+
+            await db.SaveChangesAsync();
+
+            tran.Complete();
+            return true;
+
+
         }
 
         public async Task<bool> SwapToDoItems(int firstId, int secondId){
-            using (var tran = new TransactionScope(
+            using var tran = new TransactionScope(
                TransactionScopeOption.Required,
                new TransactionOptions() { IsolationLevel = IsolationLevel.Serializable },
-               TransactionScopeAsyncFlowOption.Enabled))
+               TransactionScopeAsyncFlowOption.Enabled);
+            var firstItem = await GetToDoOrNull(firstId);
+            if (firstItem == null)
             {
-                var firstItem = await GetToDoOrNull(firstId);
-                if(firstItem == null)
-                {
-                    tran.Complete();
-                    return false;
-                }
-
-                var seconditem = await GetToDoOrNull(secondId);
-                if (seconditem == null)
-                {
-                    tran.Complete();
-                    return false;
-                }
-
-                int firstItemsPos = firstItem.CategoryPos;
-                int secondItemsPos = seconditem.CategoryPos;
-
-                firstItem.CategoryPos = secondItemsPos;
-                seconditem.CategoryPos = firstItemsPos;
-               
-                    await db.SaveChangesAsync();
-
                 tran.Complete();
-                return true;
-
-
-            }
+                return false;
             }
 
-        private bool ToDoItemExists(int todoID)
-        {
-            return  db.ToDoItem.Any(e => e.ID == todoID);
+            var seconditem = await GetToDoOrNull(secondId);
+            if (seconditem == null)
+            {
+                tran.Complete();
+                return false;
+            }
+
+            if (firstItem.Category != seconditem.Category)
+            {
+                tran.Complete();
+                return false;
+            }
+
+            int firstItemsPos = firstItem.CategoryPos;
+            int secondItemsPos = seconditem.CategoryPos;
+
+            firstItem.CategoryPos = secondItemsPos;
+            seconditem.CategoryPos = firstItemsPos;
+
+            await db.SaveChangesAsync();
+
+            tran.Complete();
+            return true;
         }
 
-        private int maxCategoryPosInCategory(string categoryName)
+
+        private int MaxCategoryPosInCategory(string categoryName)
         {
             int maxCategoryPos = 0;
 
